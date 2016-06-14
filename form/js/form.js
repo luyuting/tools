@@ -8,7 +8,7 @@ function generateForm(options) {
 	var _params = options['params'];
 	var _async = options['async'] || false;
 	var _action = options['action'];
-	var _callback = _async? function(data) {}: options['callback'];
+	var _callback = _async? options['callback']: function(data) {};
 	
 	var _formParams = [];
 	var _validate = function() {
@@ -23,7 +23,7 @@ function generateForm(options) {
 			var node = $('#' + id);
 			var val = node.val().trim();
 			if (!regex.test(val)) {
-				node.focus();
+				node.addClass('has-error').focus();
 				return false;
 			}
 			params[name] = val;
@@ -85,7 +85,10 @@ function generateForm(options) {
 						item.append($('<textarea></textarea>').attr('name', name).attr('id', id)
 							.attr('placeholder', value || ''));
 						break;
-					default: break;
+					default : 
+						item.append($('<input type="' + type + '"/>').attr('name', name).attr('id', id)
+							.attr('placeholder', value || ''));
+						break;
 				}
 				_formParams.push({name : name, regex : regex, id : id});
 				_initForm.append(item);
@@ -170,4 +173,8 @@ function generateForm(options) {
 		$('body').append(_appendArea);
 	}
 	$(_appendArea).append(_formArea);
+	
+	$('.has-error').live('keydown', function() {
+		$(this).removeClass('has-error');
+	});
 }
