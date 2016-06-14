@@ -174,7 +174,7 @@ function generateForm(options) {
 	}
 	$(_appendArea).append(_formArea);
 	
-	$('.has-error').live('keydown', function() {
+	$('.has-error').on('keydown', function() {
 		$(this).removeClass('has-error');
 	});
 }
